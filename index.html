@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>❖ Ritual Role Prediction ❖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg" />
+<style>
+:root{
+  --bg1:#02120a;--bg2:#042916;--accent1:#07e08f;--accent2:#06a06a;--muted:#9fbdb0;
+  --glass: rgba(255,255,255,0.02); --radius:12px; --ease: cubic-bezier(.2,.9,.2,1);
+  font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  min-height:100vh;background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  display:flex;align-items:center;justify-content:center;padding:18px;color:#e8fff7;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+
+/* background */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.grad{position:absolute;inset:-30%;filter:blur(70px);background:radial-gradient(circle at 20% 20%, rgba(7,224,143,0.06), transparent 8%), radial-gradient(circle at 80% 80%, rgba(6,160,106,0.03), transparent 12%), linear-gradient(120deg, rgba(7,224,143,0.02), rgba(6,160,106,0.01));transform:translateZ(0);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.particles{position:absolute;inset:0}
+.particles span{position:absolute;font-size:24px;color:rgba(7,224,143,0.06);animation:float 12s ease-in-out infinite}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+
+/* layout */
+.app{z-index:2;width:100%;max-width:980px;display:grid;grid-template-columns:1fr 380px;gap:18px}
+@media (max-width:920px){ .app{grid-template-columns:1fr} }
+.card{background:var(--glass);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 26px 60px rgba(0,0,0,0.55)}
+.header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center}
+.logo img{width:56px;height:56px;border-radius:10px;object-fit:cover}
+.title{font-size:18px;font-weight:800;color:#dfffe8}
+.lead{font-size:13px;color:var(--muted);margin-top:2px}
+.label{font-size:13px;color:var(--muted);margin:8px 0;font-weight:700}
+.input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:#e8fff7;font-size:15px}
+.row{display:flex;gap:12px}
+.row .input{flex:1}
+.btn{padding:12px 14px;border-radius:12px;border:0;font-weight:800;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#04130b;cursor:pointer;box-shadow:0 12px 30px rgba(6,95,70,0.16)}
+.btn-ghost{padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
+.result{display:flex;flex-direction:column;gap:10px}
+.res-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.res-title{font-weight:800;font-size:15px;color:#dfffe8}
+.res-meta{color:var(--muted);font-size:13px}
+.index{font-size:40px;font-weight:800;background:linear-gradient(90deg,var(--accent1),#8af5c6);-webkit-background-clip:text;color:transparent;text-align:right}
+.tier{font-weight:700;color:#e6fff7;text-align:right}
+.box{background:rgba(255,255,255,0.01);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+.flag{background:rgba(255,170,90,0.06);color:#ffdcb3;padding:8px;border-radius:8px;font-weight:700}
+.share-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.share-btn{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
+.thumb{width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.03);margin-top:10px;object-fit:cover}
+.hidden{display:none}
+.fade-in{animation:fadeIn .45s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media (max-width:520px){ .grad{filter:blur(40px);animation:none} .particles span{display:none} .app{grid-template-columns:1fr} .index{font-size:32px} }
+</style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="grad"></div>
+    <div class="particles" aria-hidden="true">
+      <span style="top:8%;left:12%">❖</span>
+      <span style="top:28%;left:78%">❖</span>
+      <span style="top:48%;left:28%">❖</span>
+      <span style="top:70%;left:66%">❖</span>
+    </div>
+  </div>
+
+  <main class="app" role="main" aria-labelledby="appTitle">
+    <!-- Form -->
+    <section class="card" id="formCard" aria-labelledby="appTitle">
+      <div class="header">
+        <div class="logo"><img id="logoImg" src="https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg" alt="Ritual logo"></div>
+        <div>
+          <div id="appTitle" class="title">❖ Ritual Role Prediction ❖</div>
+          <div class="lead">Informational snapshot to understand contribution. Not an official assignment.</div>
+        </div>
+      </div>
+
+      <div>
+        <label class="label" for="username">Discord username</label>
+        <input id="username" class="input" inputmode="text" placeholder="e.g. josh.simenhoff" />
+
+        <label class="label" for="joindate">Join date</label>
+        <input id="joindate" class="input" type="date" />
+
+        <div class="row" style="margin-top:8px">
+          <div>
+            <label class="label" for="xposts">Total X posts</label>
+            <input id="xposts" class="input" inputmode="numeric" type="number" min="0" placeholder="e.g. 42" />
+          </div>
+          <div style="width:160px">
+            <label class="label" for="messages">Total messages</label>
+            <input id="messages" class="input" inputmode="numeric" type="number" min="0" placeholder="e.g. 520" />
+          </div>
+        </div>
+
+        <label class="label" for="wins" style="margin-top:10px">Event participation (wins / contributions)</label>
+        <input id="wins" class="input" inputmode="numeric" type="number" min="0" placeholder="e.g. 1" />
+
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button id="checkBtn" class="btn" type="button">Check Now</button>
+          <button id="clearBtn" class="btn-ghost" type="button">Clear</button>
+        </div>
+
+        <div class="res-meta" style="margin-top:10px">Avoid farming. Be honest for useful suggestions.</div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <aside class="card result hidden" id="resultCard" aria-live="polite">
+      <div class="res-top">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="logo" style="width:48px;height:48px"><img src="https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg" alt="" style="width:42px;height:42px;border-radius:8px"></div>
+          <div>
+            <div id="resUser" class="res-title">username</div>
+            <div id="resMeta" class="res-meta">Joined • months</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="res-meta" style="opacity:0.95">Informational index</div>
+          <div id="resIndex" class="index">--%</div>
+          <div id="resTier" class="tier">—</div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div style="font-weight:700;margin-bottom:8px">Activity snapshot</div>
+        <div id="resBreakdown" class="res-meta"></div>
+        <div id="resFlags"></div>
+      </div>
+
+      <div class="box">
+        <div style="font-weight:700;margin-bottom:8px">Quality & suggestions</div>
+        <div id="resAdvice" class="res-meta"></div>
+      </div>
+
+      <div class="box">
+        <div style="font-weight:700;margin-bottom:8px">Shareable template</div>
+        <img id="imgPreview" class="thumb hidden" alt="Result image preview">
+        <div class="share-row" style="margin-top:8px">
+          <button id="downloadBtn" class="share-btn" type="button">Download image</button>
+          <button id="openImgBtn" class="share-btn" type="button">Open image</button>
+          <button id="tweetBtn" class="share-btn" type="button">Share on X</button>
+          <button id="copyBtn" class="share-btn" type="button">Copy text</button>
+          <button id="backBtn" class="share-btn" type="button">Check another</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // helper
+  const $ = id => document.getElementById(id);
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const round2 = v => Math.round(v*100)/100;
+
+  // compute functions (kept simple & robust)
+  function monthsBetween(dateStr){
+    const d = new Date(dateStr);
+    if(isNaN(d)) return 0;
+    return Math.max(0, Math.floor((Date.now() - d.getTime()) / (1000*60*60*24*30)));
+  }
+
+  function computeIndex({joinDate, posts, msgs, wins}){
+    const months = monthsBetween(joinDate);
+    let tenure = 0;
+    if(months >= 12) tenure = 30;
+    else if(months >= 9) tenure = 27;
+    else if(months >= 6) tenure = 24;
+    else if(months >= 4) tenure = 18;
+    else if(months >= 2) tenure = 12;
+    else if(months >= 1) tenure = 6;
+    else tenure = 2;
+
+    const p = Math.max(0, Number(posts) || 0);
+    const m = Math.max(0, Number(msgs) || 0);
+
+    const postsScaled = Math.log10(p + 1);
+    const msgScaled = Math.log10(m + 1);
+    const postsScore = clamp(Math.round((postsScaled / 2) * 22.5), 0, 22.5);
+    const msgScore = clamp(Math.round((msgScaled / 2) * 22.5), 0, 22.5);
+    const activity = clamp(postsScore + msgScore, 0, 45);
+
+    const eventScore = clamp(Math.min(Number(wins) * 5, 15), 0, 15);
+
+    const ratio = (p === 0 && m === 0) ? 1 : ((m === 0) ? 0.01 : p / m);
+    const ratioScore = 1 - Math.min(Math.abs(Math.log10(clamp(ratio, 0.01, 100))), 2) / 2;
+    const qualityBoost = clamp(Math.round((ratioScore * 6) + (eventScore >= 10 ? 4 : 0)), 0, 10);
+
+    let total = tenure + activity + eventScore + qualityBoost;
+
+    const postsPerMonth = months > 0 ? p / Math.max(1, months) : p;
+    const msgsPerMonth = months > 0 ? m / Math.max(1, months) : m;
+    const postsPerDay = postsPerMonth / 30;
+    const msgsPerDay = msgsPerMonth / 30;
+    const flags = [];
+
+    if(months < 2 && (p >= 60 || postsPerDay > 2)){
+      flags.push('Possible low-quality activity: many posts soon after joining.');
+      total = Math.round(total * 0.74);
+    }
+    if(p > 0 && m < Math.max(50, p * 0.25)){
+      flags.push('Many posts but low conversation. Add context and join discussions.');
+      total = Math.round(total * 0.86);
+    }
+    if(postsPerDay > 10 || msgsPerDay > 500){
+      flags.push('Very high activity density detected; ensure activity follows community guidelines.');
+      total = Math.round(total * 0.7);
+    }
+
+    total = clamp(Math.round(total), 0, 100);
+
+    return {
+      index: total,
+      breakdown: {
+        months, posts: p, msgs: m, wins: Number(wins) || 0,
+        tenure, postsScore: round2(postsScore), msgScore: round2(msgScore), activity: round2(activity),
+        eventScore, qualityBoost, postsPerMonth: round2(postsPerMonth), msgsPerMonth: round2(msgsPerMonth),
+        postsPerDay: round2(postsPerDay), msgsPerDay: round2(msgsPerDay), ratio: round2(ratio)
+      },
+      flags
+    };
+  }
+
+  function tierFromIndex(i){
+    if(i >= 92) return 'Radiant Ritualist';
+    if(i >= 78) return 'Ritualist';
+    if(i >= 62) return 'Ritty';
+    if(i >= 45) return 'Ritty Bitty';
+    if(i >= 28) return 'Ascendant';
+    return 'Initiate';
+  }
+
+  function qualitativeAdvice(b){
+    const adv = [];
+    adv.push('Share context: explain process, tools, and lessons learned.');
+    adv.push('Be conversational: reply, help others, and ask follow-ups.');
+    if(b.postsPerMonth > 0 && b.ratio < 0.3) adv.push('If posts get few replies, add examples or questions to invite engagement.');
+    if(b.eventScore === 0) adv.push('Participate in events or collaborations when possible.');
+    if(b.months < 3) adv.push('Consistency matters. Show up regularly.');
+    adv.push('Quality over quantity: focus on posts that help others.');
+    return adv;
+  }
+
+  // DOM refs
+  const formCard = $('formCard'), resultCard = $('resultCard');
+  const fields = {
+    username: $('username'), joindate: $('joindate'),
+    xposts: $('xposts'), messages: $('messages'), wins: $('wins')
+  };
+  const resUser = $('resUser'), resMeta = $('resMeta'), resIndex = $('resIndex'), resTier = $('resTier');
+  const resBreakdown = $('resBreakdown'), resFlags = $('resFlags'), resAdvice = $('resAdvice');
+  const imgPreview = $('imgPreview');
+
+  // create template image (canvas) - simplified & robust
+  function createTemplateImageSafe({username, index, tier}) {
+    return new Promise(resolve => {
+      try {
+        const width = 1200, height = 675;
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        // background
+        const g = ctx.createLinearGradient(0,0,width,height);
+        g.addColorStop(0, '#02120a'); g.addColorStop(1, '#042916');
+        ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
+
+        // subtle ❖
+        ctx.globalAlpha = 0.06;
+        ctx.fillStyle = '#07e08f';
+        ctx.font = '220px Poppins, sans-serif';
+        ctx.fillText('❖', width*0.08, height*0.28);
+        ctx.fillText('❖', width*0.72, height*0.86);
+        ctx.globalAlpha = 1;
+
+        const pad = 80;
+        ctx.fillStyle = 'rgba(255,255,255,0.02)';
+        roundRect(ctx, pad, pad, width - pad*2, height - pad*2, 20, true, false);
+
+        // try to draw logo (if it fails, continue)
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const logoSize = 160;
+            ctx.drawImage(img, pad + 28, pad + 28, logoSize, logoSize);
+            drawTextAndIndex();
+            resolve(canvas.toDataURL('image/png'));
+          } catch(e){
+            drawTextAndIndex(); resolve(canvas.toDataURL('image/png'));
+          }
+        };
+        img.onerror = () => { drawTextAndIndex(); resolve(canvas.toDataURL('image/png')); };
+        img.src = 'https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg';
+
+        function drawTextAndIndex(){
+          ctx.fillStyle = '#dfffe8'; ctx.font = 'bold 44px Poppins, sans-serif';
+          ctx.fillText('Ritual Role Snapshot', pad + 220, pad + 62);
+          ctx.fillStyle = '#bfffe0'; ctx.font = '600 36px Poppins, sans-serif';
+          ctx.fillText(username, pad + 220, pad + 112);
+
+          ctx.font = '900 140px Poppins, sans-serif';
+          ctx.fillStyle = '#8af5c6';
+          const idxText = index + '%';
+          const tw = ctx.measureText(idxText).width;
+          ctx.fillText(idxText, width - pad - tw - 8, pad + 190);
+
+          ctx.font = '700 34px Poppins, sans-serif';
+          ctx.fillStyle = '#e6fff7';
+          ctx.fillText(tier, width - pad - tw - 8, pad + 240);
+
+          ctx.font = '500 20px Poppins, sans-serif';
+          ctx.fillStyle = 'rgba(191,255,224,0.7)';
+          ctx.fillText('Informational snapshot — not an official role', pad + 28, height - pad - 20);
+        }
+      } catch (err) {
+        // on any error return a tiny placeholder
+        const placeholder = document.createElement('canvas');
+        placeholder.width = 800; placeholder.height = 450;
+        const px = placeholder.getContext('2d');
+        px.fillStyle = '#02120a'; px.fillRect(0,0,placeholder.width, placeholder.height);
+        px.fillStyle = '#fff'; px.font = '20px sans-serif';
+        px.fillText('Image generation failed', 20, 50);
+        resolve(placeholder.toDataURL('image/png'));
+      }
+    });
+  }
+
+  function roundRect(ctx,x,y,w,h,r,fill,stroke){
+    if(typeof r === 'undefined') r=5;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+    if(fill) ctx.fill();
+    if(stroke) ctx.stroke();
+  }
+
+  // main button wiring
+  $('checkBtn').addEventListener('click', async () => {
+    const username = fields.username.value.trim();
+    const joinDate = fields.joindate.value;
+    const posts = fields.xposts.value || 0;
+    const msgs = fields.messages.value || 0;
+    const wins = fields.wins.value || 0;
+    if(!username || !joinDate) {
+      alert('Please enter username and join date.');
+      return;
+    }
+
+    // flash overlay
+    const flash = document.createElement('div'); flash.style.position='fixed'; flash.style.inset='0'; flash.style.background='rgba(7,224,143,0.45)'; flash.style.zIndex=9999;
+    document.body.appendChild(flash);
+    setTimeout(()=> { flash.remove(); }, 800);
+
+    // compute result
+    const {index, breakdown, flags} = computeIndex({joinDate, posts, msgs, wins});
+    const tier = tierFromIndex(index);
+    // fill result DOM
+    resUser.textContent = username;
+    resMeta.textContent = `Joined ${new Date(joinDate).toLocaleDateString()} • ${breakdown.months} month(s)`;
+    resIndex.textContent = index + '%';
+    resTier.textContent = tier;
+
+    // breakdown info
+    resBreakdown.innerHTML = '';
+    const lines = [
+      `Tenure: ${breakdown.months} month(s).`,
+      `Posts/month: ${breakdown.postsPerMonth} • Messages/month: ${breakdown.msgsPerMonth}`,
+      `Posts/messages ratio: ${breakdown.ratio}`,
+      `Components: posts ${breakdown.postsScore}, messages ${breakdown.msgScore}, events ${breakdown.eventScore}, quality boost ${breakdown.qualityBoost}`
+    ];
+    lines.forEach(t => { const d = document.createElement('div'); d.textContent = t; d.style.marginBottom='6px'; resBreakdown.appendChild(d); });
+
+    resFlags.innerHTML = '';
+    flags.forEach(f => { const el = document.createElement('div'); el.className='flag'; el.textContent = f; resFlags.appendChild(el); });
+
+    resAdvice.innerHTML = '';
+    qualitativeAdvice(breakdown).forEach(s => { const d = document.createElement('div'); d.textContent = '• ' + s; d.style.marginBottom='6px'; resAdvice.appendChild(d); });
+
+    // show result card
+    formCard.classList.add('hidden');
+    resultCard.classList.remove('hidden');
+    resultCard.classList.add('fade-in');
+
+    // generate image and preview
+    window._lastShareText = `${username} — Ritual snapshot (informational)\nIndex: ${index}% • ${tier}\n(Informational only)`;
+    imgPreview.classList.add('hidden');
+    try{
+      const dataUrl = await createTemplateImageSafe({username, index, tier});
+      window._lastImageDataUrl = dataUrl;
+      imgPreview.src = dataUrl;
+      imgPreview.classList.remove('hidden');
+      imgPreview.classList.add('fade-in');
+    }catch(e){
+      console.error('Image generation error', e);
+    }
+  });
+
+  $('clearBtn').addEventListener('click', () => {
+    Object.values(fields).forEach(i => i.value = '');
+  });
+
+  $('downloadBtn').addEventListener('click', () => {
+    const data = window._lastImageDataUrl;
+    if(!data) return alert('Image not ready yet.');
+    const a = document.createElement('a'); a.href = data; a.download = 'ritual_snapshot.png'; document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  $('openImgBtn').addEventListener('click', () => {
+    const data = window._lastImageDataUrl;
+    if(!data) return alert('Image not ready yet.');
+    window.open(data, '_blank', 'noopener');
+  });
+
+  $('copyBtn').addEventListener('click', () => {
+    if(!window._lastShareText) return alert('Nothing to copy yet.');
+    navigator.clipboard?.writeText(window._lastShareText).then(()=> alert('Text copied.'), ()=> alert('Copy failed.'));
+  });
+
+  $('tweetBtn').addEventListener('click', () => {
+    if(!window._lastShareText) return alert('Nothing to share yet.');
+    const text = encodeURIComponent(window._lastShareText);
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+    window.open(url, '_blank', 'noopener');
+  });
+
+  $('backBtn').addEventListener('click', () => {
+    resultCard.classList.add('hidden');
+    formCard.classList.remove('hidden');
+  });
+
+  // expose helpers for debugging if needed
+  window._computeIndex = computeIndex;
+  window._tierFromIndex = tierFromIndex;
+});
+</script>
+</body>
+</html>
