@@ -8,41 +8,63 @@
 <link rel="icon" href="https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg" />
 <style>
 :root{
-  --bg1:#02120a;--bg2:#042916;--accent1:#07e08f;--accent2:#06a06a;--muted:#9fbdb0;
-  --glass: rgba(255,255,255,0.02); --radius:12px; --ease: cubic-bezier(.2,.9,.2,1);
-  font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  --bg1:#02120a; --bg2:#042916;
+  --accent1:#07e08f; --accent2:#06a06a;
+  --muted:#9fbdb0; --glass: rgba(255,255,255,0.02);
+  --radius:14px; --ease:cubic-bezier(.2,.9,.2,1);
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color-scheme: dark;
+  color: #e8fff7;
 }
+
+/* reset */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  min-height:100vh;background:linear-gradient(180deg,var(--bg1),var(--bg2));
-  display:flex;align-items:center;justify-content:center;padding:18px;color:#e8fff7;
+  min-height:100vh;
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  display:flex;align-items:center;justify-content:center;padding:18px;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 
 /* background */
-.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
-.grad{position:absolute;inset:-30%;filter:blur(70px);background:radial-gradient(circle at 20% 20%, rgba(7,224,143,0.06), transparent 8%), radial-gradient(circle at 80% 80%, rgba(6,160,106,0.03), transparent 12%), linear-gradient(120deg, rgba(7,224,143,0.02), rgba(6,160,106,0.01));transform:translateZ(0);animation:spin 40s linear infinite}
+.bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none}
+.gradient{
+  position:absolute;inset:-30%;filter:blur(70px);
+  background:radial-gradient(circle at 20% 20%, rgba(7,224,143,0.06), transparent 8%),
+             radial-gradient(circle at 80% 80%, rgba(6,160,106,0.03), transparent 12%),
+             linear-gradient(120deg, rgba(7,224,143,0.02), rgba(6,160,106,0.01));
+  transform:translateZ(0); animation:spin 40s linear infinite;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 .particles{position:absolute;inset:0}
-.particles span{position:absolute;font-size:24px;color:rgba(7,224,143,0.06);animation:float 12s ease-in-out infinite}
-@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+.particles span{position:absolute;font-size:26px;color:rgba(7,224,143,0.06);animation:floaty 10s ease-in-out infinite}
+@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
 
 /* layout */
 .app{z-index:2;width:100%;max-width:980px;display:grid;grid-template-columns:1fr 380px;gap:18px}
 @media (max-width:920px){ .app{grid-template-columns:1fr} }
+
+/* cards */
 .card{background:var(--glass);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 26px 60px rgba(0,0,0,0.55)}
 .header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
 .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center}
 .logo img{width:56px;height:56px;border-radius:10px;object-fit:cover}
 .title{font-size:18px;font-weight:800;color:#dfffe8}
 .lead{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* inputs */
 .label{font-size:13px;color:var(--muted);margin:8px 0;font-weight:700}
-.input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:#e8fff7;font-size:15px}
+.input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:#e8fff7;font-size:15px;outline:none}
+.input:focus{box-shadow:0 12px 30px rgba(7,224,143,0.06);border-color:rgba(7,224,143,0.2)}
 .row{display:flex;gap:12px}
 .row .input{flex:1}
+
+/* buttons */
 .btn{padding:12px 14px;border-radius:12px;border:0;font-weight:800;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#04130b;cursor:pointer;box-shadow:0 12px 30px rgba(6,95,70,0.16)}
 .btn-ghost{padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
+
+/* result */
 .result{display:flex;flex-direction:column;gap:10px}
 .res-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .res-title{font-weight:800;font-size:15px;color:#dfffe8}
@@ -54,15 +76,22 @@ body{
 .share-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .share-btn{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
 .thumb{width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.03);margin-top:10px;object-fit:cover}
+
+/* utilities */
 .hidden{display:none}
 .fade-in{animation:fadeIn .45s ease both}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@media (max-width:520px){ .grad{filter:blur(40px);animation:none} .particles span{display:none} .app{grid-template-columns:1fr} .index{font-size:32px} }
+
+@media (max-width:520px){
+  .gradient{filter:blur(40px);animation:none}
+  .particles span{display:none}
+  .index{font-size:32px}
+}
 </style>
 </head>
 <body>
-  <div class="bg" aria-hidden="true">
-    <div class="grad"></div>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="gradient"></div>
     <div class="particles" aria-hidden="true">
       <span style="top:8%;left:12%">❖</span>
       <span style="top:28%;left:78%">❖</span>
@@ -72,19 +101,19 @@ body{
   </div>
 
   <main class="app" role="main" aria-labelledby="appTitle">
-    <!-- Form -->
+    <!-- Input / Form -->
     <section class="card" id="formCard" aria-labelledby="appTitle">
       <div class="header">
-        <div class="logo"><img id="logoImg" src="https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg" alt="Ritual logo"></div>
+        <div class="logo"><img src="https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg" alt="Ritual logo"></div>
         <div>
           <div id="appTitle" class="title">❖ Ritual Role Prediction ❖</div>
-          <div class="lead">Informational snapshot to understand contribution. Not an official assignment.</div>
+          <div class="lead">Ritual Role Prediction — informational snapshot showing contribution level and context.</div>
         </div>
       </div>
 
       <div>
         <label class="label" for="username">Discord username</label>
-        <input id="username" class="input" inputmode="text" placeholder="e.g. josh.simenhoff" />
+        <input id="username" class="input" type="text" placeholder="e.g. josh.simenhoff" />
 
         <label class="label" for="joindate">Join date</label>
         <input id="joindate" class="input" type="date" />
@@ -92,23 +121,23 @@ body{
         <div class="row" style="margin-top:8px">
           <div>
             <label class="label" for="xposts">Total X posts</label>
-            <input id="xposts" class="input" inputmode="numeric" type="number" min="0" placeholder="e.g. 42" />
+            <input id="xposts" class="input" type="number" min="0" placeholder="e.g. 42" />
           </div>
           <div style="width:160px">
             <label class="label" for="messages">Total messages</label>
-            <input id="messages" class="input" inputmode="numeric" type="number" min="0" placeholder="e.g. 520" />
+            <input id="messages" class="input" type="number" min="0" placeholder="e.g. 520" />
           </div>
         </div>
 
-        <label class="label" for="wins" style="margin-top:10px">Event participation (wins / contributions)</label>
-        <input id="wins" class="input" inputmode="numeric" type="number" min="0" placeholder="e.g. 1" />
+        <label class="label" for="wins" style="margin-top:10px">Event participation (wins/contributions)</label>
+        <input id="wins" class="input" type="number" min="0" placeholder="e.g. 1" />
 
         <div style="display:flex;gap:10px;margin-top:12px">
           <button id="checkBtn" class="btn" type="button">Check Now</button>
           <button id="clearBtn" class="btn-ghost" type="button">Clear</button>
         </div>
 
-        <div class="res-meta" style="margin-top:10px">Avoid farming. Be honest for useful suggestions.</div>
+        <div class="res-meta" style="margin-top:10px">Be honest — this is informational. The tool discourages farming by design.</div>
       </div>
     </section>
 
@@ -124,7 +153,7 @@ body{
         </div>
 
         <div>
-          <div class="res-meta" style="opacity:0.95">Informational index</div>
+          <div class="res-meta" style="opacity:0.95">Ritual Role Prediction</div>
           <div id="resIndex" class="index">--%</div>
           <div id="resTier" class="tier">—</div>
         </div>
@@ -142,8 +171,12 @@ body{
       </div>
 
       <div class="box">
-        <div style="font-weight:700;margin-bottom:8px">Shareable template</div>
+        <div style="font-weight:700;margin-bottom:8px">Your Prediction Is Ready </div>
+
+        <!-- image preview -->
         <img id="imgPreview" class="thumb hidden" alt="Result image preview">
+
+        <!-- share actions -->
         <div class="share-row" style="margin-top:8px">
           <button id="downloadBtn" class="share-btn" type="button">Download image</button>
           <button id="openImgBtn" class="share-btn" type="button">Open image</button>
@@ -151,26 +184,41 @@ body{
           <button id="copyBtn" class="share-btn" type="button">Copy text</button>
           <button id="backBtn" class="share-btn" type="button">Check another</button>
         </div>
+
+        <!-- live preview of the post message (so users see exactly what will be posted) -->
+        <div class="box" style="margin-top:12px;background:rgba(255,255,255,0.015);">
+          <div style="font-weight:700;margin-bottom:8px">Post preview</div>
+          <pre id="postPreview" style="white-space:pre-wrap;font-family:inherit;color:var(--muted);font-size:14px;margin:0;padding:8px;background:transparent;border-radius:8px"></pre>
+        </div>
+
       </div>
     </aside>
   </main>
 
 <script>
+/*
+  SITE_URL: change this to your real site before publishing
+*/
+const SITE_URL = 'https://ritual-role-predicton.netlify.app/'; // <- replace with your website link
+
 document.addEventListener('DOMContentLoaded', () => {
   // helper
   const $ = id => document.getElementById(id);
   const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
   const round2 = v => Math.round(v*100)/100;
 
-  // compute functions (kept simple & robust)
+  // compute helpers
   function monthsBetween(dateStr){
     const d = new Date(dateStr);
     if(isNaN(d)) return 0;
     return Math.max(0, Math.floor((Date.now() - d.getTime()) / (1000*60*60*24*30)));
   }
 
+  // Fair scoring logic with anti-farm signals
   function computeIndex({joinDate, posts, msgs, wins}){
     const months = monthsBetween(joinDate);
+
+    // tenure 0-30
     let tenure = 0;
     if(months >= 12) tenure = 30;
     else if(months >= 9) tenure = 27;
@@ -183,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = Math.max(0, Number(posts) || 0);
     const m = Math.max(0, Number(msgs) || 0);
 
+    // smooth via log
     const postsScaled = Math.log10(p + 1);
     const msgScaled = Math.log10(m + 1);
     const postsScore = clamp(Math.round((postsScaled / 2) * 22.5), 0, 22.5);
@@ -191,12 +240,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const eventScore = clamp(Math.min(Number(wins) * 5, 15), 0, 15);
 
+    // quality: balanced posts/messages & event weight
     const ratio = (p === 0 && m === 0) ? 1 : ((m === 0) ? 0.01 : p / m);
-    const ratioScore = 1 - Math.min(Math.abs(Math.log10(clamp(ratio, 0.01, 100))), 2) / 2;
+    const ratioScore = 1 - Math.min(Math.abs(Math.log10(clamp(ratio, 0.01, 100))), 2) / 2; // 0..1
     const qualityBoost = clamp(Math.round((ratioScore * 6) + (eventScore >= 10 ? 4 : 0)), 0, 10);
 
     let total = tenure + activity + eventScore + qualityBoost;
 
+    // signals / penalties
     const postsPerMonth = months > 0 ? p / Math.max(1, months) : p;
     const msgsPerMonth = months > 0 ? m / Math.max(1, months) : m;
     const postsPerDay = postsPerMonth / 30;
@@ -241,11 +292,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function qualitativeAdvice(b){
     const adv = [];
-    adv.push('Share context: explain process, tools, and lessons learned.');
+    adv.push('Share context: explain process, tools used, and lessons learned.');
     adv.push('Be conversational: reply, help others, and ask follow-ups.');
     if(b.postsPerMonth > 0 && b.ratio < 0.3) adv.push('If posts get few replies, add examples or questions to invite engagement.');
     if(b.eventScore === 0) adv.push('Participate in events or collaborations when possible.');
-    if(b.months < 3) adv.push('Consistency matters. Show up regularly.');
+    if(b.months < 3) adv.push('Consistency matters: show up regularly.');
     adv.push('Quality over quantity: focus on posts that help others.');
     return adv;
   }
@@ -258,10 +309,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const resUser = $('resUser'), resMeta = $('resMeta'), resIndex = $('resIndex'), resTier = $('resTier');
   const resBreakdown = $('resBreakdown'), resFlags = $('resFlags'), resAdvice = $('resAdvice');
-  const imgPreview = $('imgPreview');
+  const imgPreview = $('imgPreview'), postPreview = $('postPreview');
 
-  // create template image (canvas) - simplified & robust
-  function createTemplateImageSafe({username, index, tier}) {
+  // create template image (canvas) — now uses "Ritual Role Prediction" wording
+  function createTemplateImage({username, index, tier}) {
     return new Promise(resolve => {
       try {
         const width = 1200, height = 675;
@@ -269,12 +320,12 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = width; canvas.height = height;
         const ctx = canvas.getContext('2d');
 
-        // background
+        // background gradient
         const g = ctx.createLinearGradient(0,0,width,height);
         g.addColorStop(0, '#02120a'); g.addColorStop(1, '#042916');
         ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
 
-        // subtle ❖
+        // decorative ❖
         ctx.globalAlpha = 0.06;
         ctx.fillStyle = '#07e08f';
         ctx.font = '220px Poppins, sans-serif';
@@ -286,26 +337,28 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = 'rgba(255,255,255,0.02)';
         roundRect(ctx, pad, pad, width - pad*2, height - pad*2, 20, true, false);
 
-        // try to draw logo (if it fails, continue)
+        // attempt to draw logo; if fails, continue
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.onload = () => {
-          try {
+          try{
             const logoSize = 160;
             ctx.drawImage(img, pad + 28, pad + 28, logoSize, logoSize);
-            drawTextAndIndex();
-            resolve(canvas.toDataURL('image/png'));
-          } catch(e){
-            drawTextAndIndex(); resolve(canvas.toDataURL('image/png'));
-          }
+          }catch(e){}
+          drawText();
+          resolve(canvas.toDataURL('image/png'));
         };
-        img.onerror = () => { drawTextAndIndex(); resolve(canvas.toDataURL('image/png')); };
+        img.onerror = () => { drawText(); resolve(canvas.toDataURL('image/png')); };
         img.src = 'https://i.postimg.cc/hP9HKQvV/20251109-011259.jpg';
 
-        function drawTextAndIndex(){
-          ctx.fillStyle = '#dfffe8'; ctx.font = 'bold 44px Poppins, sans-serif';
-          ctx.fillText('Ritual Role Snapshot', pad + 220, pad + 62);
-          ctx.fillStyle = '#bfffe0'; ctx.font = '600 36px Poppins, sans-serif';
+        function drawText(){
+          // Title: Ritual Role Prediction
+          ctx.fillStyle = '#dfffe8';
+          ctx.font = 'bold 44px Poppins, sans-serif';
+          ctx.fillText('Ritual Role Prediction', pad + 220, pad + 62);
+
+          ctx.fillStyle = '#bfffe0';
+          ctx.font = '600 36px Poppins, sans-serif';
           ctx.fillText(username, pad + 220, pad + 112);
 
           ctx.font = '900 140px Poppins, sans-serif';
@@ -320,10 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
           ctx.font = '500 20px Poppins, sans-serif';
           ctx.fillStyle = 'rgba(191,255,224,0.7)';
-          ctx.fillText('Informational snapshot — not an official role', pad + 28, height - pad - 20);
+          ctx.fillText('Ritual Role Prediction', pad + 28, height - pad - 20);
         }
-      } catch (err) {
-        // on any error return a tiny placeholder
+      } catch(err) {
         const placeholder = document.createElement('canvas');
         placeholder.width = 800; placeholder.height = 450;
         const px = placeholder.getContext('2d');
@@ -348,104 +400,73 @@ document.addEventListener('DOMContentLoaded', () => {
     if(stroke) ctx.stroke();
   }
 
-  // main button wiring
+  // Build the exact share message shown in your request
+  function buildShareText(username, index, tier){
+    return [
+      'Took the Ritual Role Prediction today.',
+      'Interesting to see how my join date, messages, posts, and wins shape my contribution score.',
+      'Try it yourself 👇',
+      SITE_URL,
+      '#Ritualnet #RitualCommunity'
+    ].join('\n');
+  }
+
+  // update the live post preview shown in the UI
+  function updatePostPreview(text){
+    postPreview.textContent = text;
+  }
+
+  // main "Check Now" flow
   $('checkBtn').addEventListener('click', async () => {
     const username = fields.username.value.trim();
     const joinDate = fields.joindate.value;
     const posts = fields.xposts.value || 0;
     const msgs = fields.messages.value || 0;
     const wins = fields.wins.value || 0;
-    if(!username || !joinDate) {
-      alert('Please enter username and join date.');
+    if(!username || !joinDate){
+      alert('Please enter your username and join date.');
       return;
     }
 
-    // flash overlay
-    const flash = document.createElement('div'); flash.style.position='fixed'; flash.style.inset='0'; flash.style.background='rgba(7,224,143,0.45)'; flash.style.zIndex=9999;
-    document.body.appendChild(flash);
-    setTimeout(()=> { flash.remove(); }, 800);
+    // 1s green flash
+    const flash = document.createElement('div');
+    flash.style.position='fixed'; flash.style.inset='0'; flash.style.background='rgba(7,224,143,0.46)';
+    flash.style.zIndex=9999; document.body.appendChild(flash);
+    setTimeout(()=> { try{ flash.remove(); }catch(e){} }, 900);
 
-    // compute result
+    // compute
     const {index, breakdown, flags} = computeIndex({joinDate, posts, msgs, wins});
     const tier = tierFromIndex(index);
+
     // fill result DOM
     resUser.textContent = username;
     resMeta.textContent = `Joined ${new Date(joinDate).toLocaleDateString()} • ${breakdown.months} month(s)`;
     resIndex.textContent = index + '%';
     resTier.textContent = tier;
 
-    // breakdown info
+    // breakdown lines
     resBreakdown.innerHTML = '';
-    const lines = [
+    [
       `Tenure: ${breakdown.months} month(s).`,
       `Posts/month: ${breakdown.postsPerMonth} • Messages/month: ${breakdown.msgsPerMonth}`,
       `Posts/messages ratio: ${breakdown.ratio}`,
       `Components: posts ${breakdown.postsScore}, messages ${breakdown.msgScore}, events ${breakdown.eventScore}, quality boost ${breakdown.qualityBoost}`
-    ];
-    lines.forEach(t => { const d = document.createElement('div'); d.textContent = t; d.style.marginBottom='6px'; resBreakdown.appendChild(d); });
+    ].forEach(line => { const d = document.createElement('div'); d.textContent = line; d.style.marginBottom='6px'; resBreakdown.appendChild(d); });
 
+    // flags
     resFlags.innerHTML = '';
     flags.forEach(f => { const el = document.createElement('div'); el.className='flag'; el.textContent = f; resFlags.appendChild(el); });
 
+    // advice
     resAdvice.innerHTML = '';
     qualitativeAdvice(breakdown).forEach(s => { const d = document.createElement('div'); d.textContent = '• ' + s; d.style.marginBottom='6px'; resAdvice.appendChild(d); });
 
-    // show result card
+    // show result
     formCard.classList.add('hidden');
     resultCard.classList.remove('hidden');
     resultCard.classList.add('fade-in');
 
-    // generate image and preview
-    window._lastShareText = `${username} — Ritual snapshot (informational)\nIndex: ${index}% • ${tier}\n(Informational only)`;
-    imgPreview.classList.add('hidden');
+    // generate preview image & set share text
     try{
-      const dataUrl = await createTemplateImageSafe({username, index, tier});
-      window._lastImageDataUrl = dataUrl;
-      imgPreview.src = dataUrl;
-      imgPreview.classList.remove('hidden');
-      imgPreview.classList.add('fade-in');
-    }catch(e){
-      console.error('Image generation error', e);
-    }
-  });
-
-  $('clearBtn').addEventListener('click', () => {
-    Object.values(fields).forEach(i => i.value = '');
-  });
-
-  $('downloadBtn').addEventListener('click', () => {
-    const data = window._lastImageDataUrl;
-    if(!data) return alert('Image not ready yet.');
-    const a = document.createElement('a'); a.href = data; a.download = 'ritual_snapshot.png'; document.body.appendChild(a); a.click(); a.remove();
-  });
-
-  $('openImgBtn').addEventListener('click', () => {
-    const data = window._lastImageDataUrl;
-    if(!data) return alert('Image not ready yet.');
-    window.open(data, '_blank', 'noopener');
-  });
-
-  $('copyBtn').addEventListener('click', () => {
-    if(!window._lastShareText) return alert('Nothing to copy yet.');
-    navigator.clipboard?.writeText(window._lastShareText).then(()=> alert('Text copied.'), ()=> alert('Copy failed.'));
-  });
-
-  $('tweetBtn').addEventListener('click', () => {
-    if(!window._lastShareText) return alert('Nothing to share yet.');
-    const text = encodeURIComponent(window._lastShareText);
-    const url = `https://twitter.com/intent/tweet?text=${text}`;
-    window.open(url, '_blank', 'noopener');
-  });
-
-  $('backBtn').addEventListener('click', () => {
-    resultCard.classList.add('hidden');
-    formCard.classList.remove('hidden');
-  });
-
-  // expose helpers for debugging if needed
-  window._computeIndex = computeIndex;
-  window._tierFromIndex = tierFromIndex;
-});
-</script>
-</body>
-</html>
+      imgPreview.classList.add('hidden');
+      const dataUrl = await createTemplateIm
